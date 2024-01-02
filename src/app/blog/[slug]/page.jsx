@@ -1,5 +1,5 @@
-const SingleBlog = () => {
-  return <div>SingleBlog</div>;
+const SinglePostPage = () => {
+  return <div>SinglePostPage</div>;
 };
 
-export default SingleBlog;
+export default SinglePostPage;
