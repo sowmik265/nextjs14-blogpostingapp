@@ -4,11 +4,11 @@
   gap: 10px;
 }
 
-.tile {
+.title {
   color: gray;
   font-weight: bold;
 }
 
-.use {
+.username {
   font-weight: 500;
 }
