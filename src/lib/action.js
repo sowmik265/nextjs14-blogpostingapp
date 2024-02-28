@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { signIn } from "./auth";
 import { connectToDb } from "./connectToDb";
 import { Post } from "./models";
 
@@ -26,7 +27,11 @@ export const deletePost = async (formData) => {
     console.log("deleted from db");
     revalidatePath("/blog");
   } catch (error) {
-    console.log(error); 
+    console.log(error);
     return { error: "something went wrong!" };
   }
+};
+
+export const handleGithubLogin = async () => {
+  await signIn("github");
 };
