@@ -1,5 +1,6 @@
 "use server";
 
+import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
 import { signIn, signOut } from "./auth";
 import { connectToDb } from "./connectToDb";
@@ -44,10 +45,14 @@ export const handleRegister = async (formData) => {
     if (user) {
       return "user already exist !";
     }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const newUser = new User({
       userName,
       email,
-      password,
+      password: hashedPassword,
       passwordRepeat,
     });
     await newUser.save();
