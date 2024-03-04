@@ -14,3 +14,14 @@
   gap: 30px;
   border-radius: 5px;
 }
+
+.github {
+  width: 100%;
+  padding: 20px;
+  cursor: pointer;
+  background-color: var(--btn);
+  color: var(--textColor);
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+}

@@ -33,17 +33,17 @@ export const deletePost = async (formData) => {
   }
 };
 
-export const handleRegister = async (formData) => {
+export const handleRegister = async (previousState, formData) => {
   const { userName, email, password, passwordRepeat } =
     Object.fromEntries(formData);
   if (password !== passwordRepeat) {
-    return "password does not match";
+    return { error: "Password Doesn't matched !" };
   }
   try {
     connectToDb();
     const user = await User.findOne({ email });
     if (user) {
-      return "user already exist !";
+      return { error: "user already exist !" };
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -57,18 +57,23 @@ export const handleRegister = async (formData) => {
     });
     await newUser.save();
     console.log("saved to DB ! ");
+    return { success: true };
   } catch (error) {
     console.log(error);
     return { error: "something went wrong !" };
   }
 };
 
-export const handleLogin = async (formData) => {
+export const handleLogin = async (previousState, formData) => {
   const { email, password } = Object.fromEntries(formData);
   try {
     await signIn("credentials", { email, password });
   } catch (error) {
     console.log(error);
+
+    if (error.message.includes("CredentialsSignin")) {
+      return { error: "Invalid email or password" };
+    }
     return { error: "something went wrong !" };
   }
 };
