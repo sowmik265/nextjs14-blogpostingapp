@@ -2,13 +2,14 @@ import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
+import { authConfig } from "./auth.config";
 import { connectToDb } from "./connectToDb";
 import { User } from "./models";
 
 const login = async (credentials) => {
   try {
     connectToDb();
-    const user =await User.findOne({ email: credentials.email });
+    const user = await User.findOne({ email: credentials.email });
 
     if (!user) {
       throw new Error("Wrong email or password!");
@@ -34,6 +35,7 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  ...authConfig,
   providers: [
     GitHub({
       clientId: process.env.GITHUB_ID,
@@ -52,7 +54,7 @@ export const {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
-      console.log(user, account, profile);
+      // console.log(user, account, profile);
       if (account.provider === "github") {
         connectToDb();
         try {
@@ -72,5 +74,6 @@ export const {
       }
       return true;
     },
+    ...authConfig.callbacks,
   },
 });

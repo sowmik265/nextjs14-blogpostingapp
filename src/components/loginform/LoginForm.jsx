@@ -12,9 +12,9 @@ const LoginForm = () => {
 
   const router = useRouter();
 
-  //   useEffect(() => {
-  //     state?.success && router.push("/login");
-  //   }, [state?.success, router]);
+    // useEffect(() => {
+    //   state?.success && router.push("/home");
+    // }, [state?.success, router]);
   return (
     <form className={styles.form} action={formAction}>
       <input type="email" placeholder="email" name="email" />
@@ -22,7 +22,7 @@ const LoginForm = () => {
       <button>Login</button>
       {state?.error}
       <Link href="/register">
-        {"Don't Have an account?"} <b>Login</b>
+        {"Don't Have an account?"} <b>Register</b>
       </Link>
     </form>
   );

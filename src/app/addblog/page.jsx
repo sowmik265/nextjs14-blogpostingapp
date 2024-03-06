@@ -1,7 +1,16 @@
+
 import { addPost, deletePost } from "@/lib/action";
+import { getCategories } from "@/lib/data";
+// import { useState } from "react";
 import styles from "./addblog.module.css";
 
-const writeBlogs = () => {
+const writeBlogs = async () => {
+  const categories = await getCategories();
+  // const [selectedCategory, setSelectedCategory] = useState('');
+
+  // const handleChange = (event) => {
+  //   setSelectedCategory(event.target.value);
+  // };
   return (
     <div className={styles.container}>
       <h1 className={styles.h1Style}>Create Post</h1>
@@ -12,6 +21,23 @@ const writeBlogs = () => {
         </label>
         <br />
         <input type="text" id="title" name="title" />
+        <br />
+        <br />
+
+        <label className={styles.labelStyle} htmlFor="title">
+          Category:
+        </label>
+        <br />
+        <select id="category_name" name="category">
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+        {/* <br />
+        <input type="text" id="title" name="category" /> */}
+
         <br />
         <br />
 
@@ -50,8 +76,15 @@ const writeBlogs = () => {
 
       <form action={deletePost}>
         <input type="text" placeholder="postId" name="id" />
-        <button>Delete</button>  
+        <button>Delete</button>
       </form>
+      <div>
+        {categories.map((category) => (
+          <div key={category.id}>
+            <h1>{category.name}</h1>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

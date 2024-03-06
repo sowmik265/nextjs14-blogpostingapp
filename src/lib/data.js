@@ -1,6 +1,6 @@
 import { unstable_noStore } from "next/cache";
 import { connectToDb } from "./connectToDb";
-import { Post, User } from "./models";
+import { Category, Post, User } from "./models";
 
 export const getPosts = async () => {
   try {
@@ -44,5 +44,17 @@ export const getUser = async (id) => {
   } catch (err) {
     console.log(err);
     throw new Error("Failed to fetch users");
+  }
+};
+
+export const getCategories = async () => {
+  unstable_noStore();
+  try {
+    connectToDb();
+    const categories = await Category.find();
+    return categories;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch categories");
   }
 };

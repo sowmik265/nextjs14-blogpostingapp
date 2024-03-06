@@ -35,6 +35,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    category: {
+      type: String,
+      required: true,
+    },
     desc: {
       type: String,
       required: true,
@@ -55,5 +59,17 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const categorySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
 export const User = mongoose.models?.User || mongoose.model("User", userSchema);
 export const Post = mongoose.models?.Post || mongoose.model("Post", postSchema);
+export const Category =
+  mongoose.models?.Category || mongoose.model("Category", categorySchema);

@@ -4,16 +4,17 @@ import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
 import { signIn, signOut } from "./auth";
 import { connectToDb } from "./connectToDb";
-import { Post, User } from "./models";
+import { Category, Post, User } from "./models";
 
 export const addPost = async (formData) => {
-  const { title, desc, slug, userId } = Object.fromEntries(formData);
+  const { title, desc, slug, userId, category } = Object.fromEntries(formData);
+  console.log(title, desc, slug, userId, category);
   try {
     connectToDb();
-    const newPost = new Post({ title, desc, slug, userId });
+    const newPost = new Post({ title, desc, slug, userId, category });
     await newPost.save();
     console.log("saved to db");
-    revalidatePath("/blog");
+    // revalidatePath("/blog");
   } catch (error) {
     console.log(error);
     return { error: "something went wrong!" };
@@ -33,7 +34,21 @@ export const deletePost = async (formData) => {
   }
 };
 
-export const handleRegister = async (previousState, formData) => {
+export const addCategory = async (formData) => {
+  const { name } = Object.fromEntries(formData);
+  try {
+    connectToDb();
+    const newCategory = new Category({ name });
+    await newCategory.save();
+    console.log("saved to db");
+    // revalidatePath("/blog");
+  } catch (error) {
+    console.log(error);
+    return { error: "something went wrong!" };
+  }
+};
+
+export const handleRegister = async (prevState, formData) => {
   const { userName, email, password, passwordRepeat } =
     Object.fromEntries(formData);
   if (password !== passwordRepeat) {
@@ -64,7 +79,7 @@ export const handleRegister = async (previousState, formData) => {
   }
 };
 
-export const handleLogin = async (previousState, formData) => {
+export const handleLogin = async (prevState, formData) => {
   const { email, password } = Object.fromEntries(formData);
   try {
     await signIn("credentials", { email, password });
@@ -74,7 +89,7 @@ export const handleLogin = async (previousState, formData) => {
     if (error.message.includes("CredentialsSignin")) {
       return { error: "Invalid email or password" };
     }
-    return { error: "something went wrong !" };
+    throw error;
   }
 };
 
